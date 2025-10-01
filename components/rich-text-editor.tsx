@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  useEditor,
-  EditorContent,
-  useEditorState,
-  type JSONContent,
-} from "@tiptap/react";
+import { useEditor, EditorContent, useEditorState, type JSONContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Document from "@tiptap/extension-document";
 import Paragraph from "@tiptap/extension-paragraph";
@@ -37,14 +32,16 @@ import {
   Superscript,
   Subscript,
 } from "lucide-react";
-import { updateNote } from "@/server/notes";
+import { useState } from "react";
 
 interface RichTextEditorProps {
   content?: JSONContent[];
   noteId?: string;
+  onEdit?: (content: any) => void;
 }
 
-const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
+const RichTextEditor = ({ content, noteId, onEdit }: RichTextEditorProps) => {
+  const [currentContent, setCurrentContent] = useState<JSONContent[] | undefined>(content);
   const editor = useEditor({
     extensions: [StarterKit, Document, Paragraph, Text],
     immediatelyRender: false,
@@ -54,7 +51,7 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
     onUpdate: ({ editor }) => {
       if (noteId) {
         const content = editor.getJSON();
-        updateNote(noteId, { content });
+        setCurrentContent(content as any as JSONContent[]);
       }
     },
     content: content ?? {
@@ -201,25 +198,19 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="bg-popover border">
             <DropdownMenuItem
-              onClick={() =>
-                editor?.chain().focus().toggleHeading({ level: 1 }).run()
-              }
+              onClick={() => editor?.chain().focus().toggleHeading({ level: 1 }).run()}
               className="text-popover-foreground hover:bg-accent hover:text-accent-foreground"
             >
               Heading 1
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() =>
-                editor?.chain().focus().toggleHeading({ level: 2 }).run()
-              }
+              onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()}
               className="text-popover-foreground hover:bg-accent hover:text-accent-foreground"
             >
               Heading 2
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() =>
-                editor?.chain().focus().toggleHeading({ level: 3 }).run()
-              }
+              onClick={() => editor?.chain().focus().toggleHeading({ level: 3 }).run()}
               className="text-popover-foreground hover:bg-accent hover:text-accent-foreground"
             >
               Heading 3
@@ -268,9 +259,7 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
           onClick={() => editor?.chain().focus().toggleBold().run()}
           disabled={!editorState?.canBold}
           className={`size-8 p-0 hover:bg-accent ${
-            editorState?.isBold
-              ? "bg-accent text-accent-foreground"
-              : "text-muted-foreground hover:text-foreground"
+            editorState?.isBold ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground"
           }`}
         >
           <Bold className="h-4 w-4" />
@@ -281,9 +270,7 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
           onClick={() => editor?.chain().focus().toggleItalic().run()}
           disabled={!editorState?.canItalic}
           className={`size-8 p-0 hover:bg-accent ${
-            editorState?.isItalic
-              ? "bg-accent text-accent-foreground"
-              : "text-muted-foreground hover:text-foreground"
+            editorState?.isItalic ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground"
           }`}
         >
           <Italic className="h-4 w-4" />
@@ -294,9 +281,7 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
           onClick={() => editor?.chain().focus().toggleStrike().run()}
           disabled={!editorState?.canStrike}
           className={`size-8 p-0 hover:bg-accent ${
-            editorState?.isStrike
-              ? "bg-accent text-accent-foreground"
-              : "text-muted-foreground hover:text-foreground"
+            editorState?.isStrike ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground"
           }`}
         >
           <Strikethrough className="h-4 w-4" />
@@ -307,9 +292,7 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
           onClick={() => editor?.chain().focus().toggleCode().run()}
           disabled={!editorState?.canCode}
           className={`size-8 p-0 hover:bg-accent ${
-            editorState?.isCode
-              ? "bg-accent text-accent-foreground"
-              : "text-muted-foreground hover:text-foreground"
+            editorState?.isCode ? "bg-accent text-accent-foreground" : "text-muted-foreground hover:text-foreground"
           }`}
         >
           <Code className="h-4 w-4" />
@@ -397,6 +380,9 @@ const RichTextEditor = ({ content, noteId }: RichTextEditorProps) => {
       <div className="min-h-96 p-6 bg-card">
         <EditorContent
           editor={editor}
+          onBlur={() => {
+            onEdit?.(currentContent);
+          }}
           className="prose prose-neutral dark:prose-invert max-w-none focus:outline-none [&_.ProseMirror]:focus:outline-none [&_.ProseMirror]:min-h-96 [&_.ProseMirror_h1]:text-3xl [&_.ProseMirror_h1]:font-bold [&_.ProseMirror_h1]:mb-4 [&_.ProseMirror_h2]:text-2xl [&_.ProseMirror_h2]:font-bold [&_.ProseMirror_h2]:mb-3 [&_.ProseMirror_p]:mb-4 [&_.ProseMirror_blockquote]:border-l-4 [&_.ProseMirror_blockquote]:border-border [&_.ProseMirror_blockquote]:pl-4 [&_.ProseMirror_blockquote]:italic [&_.ProseMirror_pre]:bg-muted [&_.ProseMirror_pre]:p-4 [&_.ProseMirror_pre]:rounded [&_.ProseMirror_pre]:overflow-x-auto [&_.ProseMirror_code]:bg-muted [&_.ProseMirror_code]:px-1 [&_.ProseMirror_code]:rounded"
         />
       </div>

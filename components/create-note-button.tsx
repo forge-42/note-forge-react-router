@@ -1,10 +1,6 @@
-"use client";
-
 import { z } from "zod";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -26,49 +22,42 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { createNote } from "@/server/notes";
+import { useCreateNoteFetcher } from "@/src/routes/api.note.create";
 
-const formSchema = z.object({
+export const createNoteSchema = z.object({
   name: z.string().min(2).max(50),
+  notebookId: z.string().min(1),
+  content: z.object(),
 });
 
 export const CreateNoteButton = ({ notebookId }: { notebookId: string }) => {
-  const router = useRouter();
-
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof createNoteSchema>>({
+    resolver: zodResolver(createNoteSchema),
     defaultValues: {
       name: "",
+      content: {},
+      notebookId,
+    },
+  });
+  const createNoteFetcher = useCreateNoteFetcher({
+    onSuccess: () => {
+      form.reset();
+      toast.success("Note created successfully");
+      setIsOpen(false);
+      setIsLoading(false);
+    },
+    onError: (response) => {
+      toast.error(response.message);
+      setIsLoading(false);
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      setIsLoading(true);
-
-      const response = await createNote({
-        title: values.name,
-        content: {},
-        notebookId,
-      });
-
-      if (response.success) {
-        form.reset();
-        toast.success("Note created successfully");
-        router.refresh();
-        setIsOpen(false);
-      } else {
-        toast.error(response.message);
-      }
-    } catch {
-      toast.error("Failed to create note");
-    } finally {
-      setIsLoading(false);
-    }
+  async function onSubmit(values: z.infer<typeof createNoteSchema>) {
+    setIsLoading(true);
+    createNoteFetcher.submit(values);
   }
 
   return (

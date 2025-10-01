@@ -14,66 +14,51 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createNotebook } from "@/server/notebooks";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useCreateNoteBookFetcher } from "@/src/routes/api.notebook.create";
 
-const formSchema = z.object({
+export const createNotebookSchema = z.object({
   name: z.string().min(2).max(50),
+  userId: z.string().optional(),
 });
 
 export const CreateNotebookButton = () => {
-  const router = useRouter();
-
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof createNotebookSchema>>({
+    resolver: zodResolver(createNotebookSchema),
     defaultValues: {
       name: "",
     },
   });
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      setIsLoading(true);
-      const userId = (await authClient.getSession()).data?.user.id;
-
-      if (!userId) {
-        toast.error("You must be logged in to create a notebook");
-        return;
-      }
-
-      const response = await createNotebook({
-        ...values,
-        userId,
-      });
-      if (response.success) {
-        form.reset();
-        toast.success("Notebook created successfully");
-        router.refresh();
-        setIsOpen(false);
-      } else {
-        toast.error(response.message);
-      }
-    } catch {
-      toast.error("Failed to create notebook");
-    } finally {
+  const createNoteFetcher = useCreateNoteBookFetcher({
+    onSuccess: () => {
+      form.reset();
+      toast.success("Notebook created successfully");
+      setIsOpen(false);
       setIsLoading(false);
+    },
+    onError: (response) => {
+      toast.error(response.message);
+      setIsLoading(false);
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof createNotebookSchema>) {
+    setIsLoading(true);
+    const userId = (await authClient.getSession()).data?.user.id;
+
+    if (!userId) {
+      toast.error("You must be logged in to create a notebook");
+      return;
     }
+    createNoteFetcher.submit({ ...values, userId });
   }
 
   return (
@@ -84,9 +69,7 @@ export const CreateNotebookButton = () => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create Notebook</DialogTitle>
-          <DialogDescription>
-            Create a new notebook to store your notes.
-          </DialogDescription>
+          <DialogDescription>Create a new notebook to store your notes.</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -105,11 +88,7 @@ export const CreateNotebookButton = () => {
               )}
             />
             <Button disabled={isLoading} type="submit">
-              {isLoading ? (
-                <Loader2 className="size-4 animate-spin" />
-              ) : (
-                "Create"
-              )}
+              {isLoading ? <Loader2 className="size-4 animate-spin" /> : "Create"}
             </Button>
           </form>
         </Form>
