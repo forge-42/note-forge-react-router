@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { useCreateNoteFetcher } from "@/src/routes/api.note.create";
+import { useCreateNoteFetcher } from "@/app/routes/api.note.create";
 
 export const createNoteSchema = z.object({
   name: z.string().min(2).max(50),

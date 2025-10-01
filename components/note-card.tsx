@@ -18,7 +18,7 @@ import {
 import { Loader2, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
-import { useDeleteNoteFetcher } from "@/src/routes/api.note.$noteId";
+import { useDeleteNoteFetcher } from "@/app/routes/api.note.$noteId";
 
 interface NotebookCardProps {
   note: Note;

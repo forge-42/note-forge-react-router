@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { Route } from "../../app/routes/+types/api.notebook.create";
+import type { Route } from "./+types/api.notebook.create";
 import { createFormData, getValidatedFormData } from "remix-hook-form";
 import { href, useFetcher } from "react-router";
 import z from "zod";

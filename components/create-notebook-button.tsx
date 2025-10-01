@@ -20,7 +20,7 @@ import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { useCreateNoteBookFetcher } from "@/src/routes/api.notebook.create";
+import { useCreateNoteBookFetcher } from "@/app/routes/api.notebook.create";
 
 export const createNotebookSchema = z.object({
   name: z.string().min(2).max(50),

@@ -1,5 +1,5 @@
 
-import type { Route } from "../../app/routes/+types/api.notebook.$notebookId";
+import type { Route } from "./+types/api.notebook.$notebookId";
 import { href, useFetcher } from "react-router";
 import { deleteNotebook } from "@/server/notebooks.server";
 
