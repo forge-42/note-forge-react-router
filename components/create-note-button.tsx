@@ -10,14 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useState } from "react";
@@ -68,9 +61,7 @@ export const CreateNoteButton = ({ notebookId }: { notebookId: string }) => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create Note</DialogTitle>
-          <DialogDescription>
-            Create a new note to store your notes.
-          </DialogDescription>
+          <DialogDescription>Create a new note to store your notes.</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
@@ -89,11 +80,7 @@ export const CreateNoteButton = ({ notebookId }: { notebookId: string }) => {
               )}
             />
             <Button disabled={isLoading} type="submit">
-              {isLoading ? (
-                <Loader2 className="size-4 animate-spin" />
-              ) : (
-                "Create"
-              )}
+              {isLoading ? <Loader2 className="size-4 animate-spin" /> : "Create"}
             </Button>
           </form>
         </Form>
