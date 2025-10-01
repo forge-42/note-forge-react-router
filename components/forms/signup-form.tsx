@@ -7,27 +7,14 @@ import { useForm } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { signUpUser } from "@/server/users";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { signUpUser } from "@/server/users.server";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import Link from "next/link";
+import { href, Link, useSubmit } from "react-router";
 import { authClient } from "@/lib/auth-client";
 
 const formSchema = z.object({
@@ -37,10 +24,8 @@ const formSchema = z.object({
   name: z.string().min(1),
 });
 
-export function SignupForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+export function SignupForm({ className, ...props }: React.ComponentProps<"div">) {
+  const submit = useSubmit();
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,16 +46,11 @@ export function SignupForm({
         return;
       }
 
-      const response = await signUpUser(
-        values.email,
-        values.password,
-        values.name
-      );
-      if (response.success) {
-        toast.success("Please check your email for verification.");
-      } else {
-        toast.error(response.message);
-      }
+      const formData = new FormData();
+      formData.set("email", values.email);
+      formData.set("password", values.password);
+      formData.set("name", values.name);
+      submit(formData, { method: "post", action: href("/signup") });
     } catch (error) {
       console.error(error);
     } finally {
@@ -90,9 +70,7 @@ export function SignupForm({
       <Card>
         <CardHeader>
           <CardTitle>Create an account</CardTitle>
-          <CardDescription>
-            Enter your details below to create an account
-          </CardDescription>
+          <CardDescription>Enter your details below to create an account</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -136,11 +114,7 @@ export function SignupForm({
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="********"
-                            {...field}
-                          />
+                          <Input type="password" placeholder="********" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -155,11 +129,7 @@ export function SignupForm({
                       <FormItem>
                         <FormLabel>Confirm Password</FormLabel>
                         <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="********"
-                            {...field}
-                          />
+                          <Input type="password" placeholder="********" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -168,25 +138,16 @@ export function SignupForm({
                 </div>
                 <div className="flex flex-col gap-3">
                   <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? (
-                      <Loader2 className="size-4 animate-spin" />
-                    ) : (
-                      "Sign up"
-                    )}
+                    {isLoading ? <Loader2 className="size-4 animate-spin" /> : "Sign up"}
                   </Button>
-                  <Button
-                    variant="outline"
-                    className="w-full"
-                    onClick={signUp}
-                    type="button"
-                  >
+                  <Button variant="outline" className="w-full" onClick={signUp} type="button">
                     Sign up with Google
                   </Button>
                 </div>
               </div>
               <div className="mt-4 text-center text-sm">
                 Already have an account?{" "}
-                <Link href="/login" className="underline underline-offset-4">
+                <Link to="/login" className="underline underline-offset-4">
                   Login
                 </Link>
               </div>

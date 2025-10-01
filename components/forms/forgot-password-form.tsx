@@ -1,5 +1,3 @@
-"use client";
-
 import { z } from "zod";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,36 +5,20 @@ import { useForm } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import Link from "next/link";
+import { Link } from "react-router";
 import { authClient } from "@/lib/auth-client";
 
 const formSchema = z.object({
   email: z.email(),
 });
 
-export function ForgotPasswordForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
+export function ForgotPasswordForm({ className, ...props }: React.ComponentProps<"div">) {
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -70,9 +52,7 @@ export function ForgotPasswordForm({
       <Card>
         <CardHeader>
           <CardTitle>Forgot your password?</CardTitle>
-          <CardDescription>
-            Enter your email below to reset your password
-          </CardDescription>
+          <CardDescription>Enter your email below to reset your password</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -95,16 +75,12 @@ export function ForgotPasswordForm({
                 </div>
 
                 <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? (
-                    <Loader2 className="size-4 animate-spin" />
-                  ) : (
-                    "Reset Password"
-                  )}
+                  {isLoading ? <Loader2 className="size-4 animate-spin" /> : "Reset Password"}
                 </Button>
               </div>
               <div className="mt-4 text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <Link href="/signup" className="underline underline-offset-4">
+                <Link to="/signup" className="underline underline-offset-4">
                   Sign up
                 </Link>
               </div>

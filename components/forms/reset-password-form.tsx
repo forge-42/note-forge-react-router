@@ -7,27 +7,13 @@ import { useForm } from "react-hook-form";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { href, Link, useNavigate, useSearchParams } from "react-router";
 import { authClient } from "@/lib/auth-client";
 
 const formSchema = z.object({
@@ -35,13 +21,10 @@ const formSchema = z.object({
   confirmPassword: z.string().min(8),
 });
 
-export function ResetPasswordForm({
-  className,
-  ...props
-}: React.ComponentProps<"div">) {
-  const router = useRouter();
+export function ResetPasswordForm({ className, ...props }: React.ComponentProps<"div">) {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
-  const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
   const [isLoading, setIsLoading] = useState(false);
@@ -69,7 +52,7 @@ export function ResetPasswordForm({
 
       if (!error) {
         toast.success("Password reset successfully");
-        router.push("/login");
+        navigate(href("/login"));
       } else {
         toast.error(error.message);
       }
@@ -85,9 +68,7 @@ export function ResetPasswordForm({
       <Card>
         <CardHeader>
           <CardTitle>Reset your password</CardTitle>
-          <CardDescription>
-            Enter your new password below to reset your password
-          </CardDescription>
+          <CardDescription>Enter your new password below to reset your password</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -101,11 +82,7 @@ export function ResetPasswordForm({
                       <FormItem>
                         <FormLabel>Password</FormLabel>
                         <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="********"
-                            {...field}
-                          />
+                          <Input type="password" placeholder="********" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -120,11 +97,7 @@ export function ResetPasswordForm({
                       <FormItem>
                         <FormLabel>Confirm Password</FormLabel>
                         <FormControl>
-                          <Input
-                            type="password"
-                            placeholder="********"
-                            {...field}
-                          />
+                          <Input type="password" placeholder="********" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -133,17 +106,13 @@ export function ResetPasswordForm({
                 </div>
                 <div className="flex flex-col gap-3">
                   <Button type="submit" className="w-full" disabled={isLoading}>
-                    {isLoading ? (
-                      <Loader2 className="size-4 animate-spin" />
-                    ) : (
-                      "Reset Password"
-                    )}
+                    {isLoading ? <Loader2 className="size-4 animate-spin" /> : "Reset Password"}
                   </Button>
                 </div>
               </div>
               <div className="mt-4 text-center text-sm">
                 Don&apos;t have an account?{" "}
-                <Link href="/signup" className="underline underline-offset-4">
+                <Link to="/signup" className="underline underline-offset-4">
                   Sign up
                 </Link>
               </div>
