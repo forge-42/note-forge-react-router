@@ -1,36 +1,20 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a fork of OrcDev [NoteForge](https://github.com/TheOrcDev/noteforge) that is an example of how to fully migrate from Next.js App Router to React Router framework mode.
 
-## Getting Started
+You can use the link from above to see the reference project that is fully written in Next.js App Router.
 
-First, run the development server:
+If you're trying to migrate your Next.js project to React Router, you can reference the livestream where I did the migration step by step: 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+https://youtube.com/live/0nH7kpXShys 
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Migration guide
+ 
+This project migrated a fully fledged Next.js App Router project to React Router framework mode. After the migration I've realised that the
+migration to TanStack Start would be almost the same as the migration to React Router framework mode, so you can use this guide to migrate to either of those two.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The only difference between the two is how you define the routes, the rest is more or less the same. With that being said here's a step by step guide on how to migrate
+from Next.js to React Router framework mode or TanStack Start:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+https://tanstack.com/start/latest/docs/framework/react/migrate-from-next-js
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+After you follow the guide above, you can use this repository as a reference on how to implement certain features that are not covered in the guide, such as authentication, 
+etc in React Router framework mode.
