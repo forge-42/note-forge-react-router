@@ -11,7 +11,7 @@ export default defineConfig({
     tailwindcss(),
     Unfonts({
       custom: {
-        families: [{ name: "Geist", src: "./src/styles/fonts/*.woff2" }],
+        families: [{ name: "Geist", src: "./app/styles/fonts/*.woff2" }],
       },
     }),
   ],
