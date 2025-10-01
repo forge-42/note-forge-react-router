@@ -1,3 +1,5 @@
+# NoteForge - Next.js App Router to React Router Migration Example
+
 This is a fork of OrcDev [NoteForge](https://github.com/TheOrcDev/noteforge) that is an example of how to fully migrate from Next.js App Router to React Router framework mode.
 
 You can use the link from above to see the reference project that is fully written in Next.js App Router.
