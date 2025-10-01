@@ -1,7 +1,7 @@
 import React from "react";
-import Link from "next/link";
+import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { Image } from "@unpic/react";
 import { TextEffect } from "@/components/ui/text-effect";
 import { AnimatedGroup } from "@/components/ui/animated-group";
 import { HeroHeader } from "./header";
@@ -83,7 +83,7 @@ export default function HeroSection() {
                       size="lg"
                       className="rounded-xl px-5 text-base"
                     >
-                      <Link href="/dashboard">
+                      <Link to="/dashboard">
                         <span className="text-nowrap">Start Forging</span>
                       </Link>
                     </Button>
@@ -114,15 +114,15 @@ export default function HeroSection() {
                     className="bg-background aspect-15/8 relative hidden rounded-2xl dark:block"
                     src="/dark.png"
                     alt="app screen"
-                    width="2700"
-                    height="1440"
+                    width={2700}
+                    height={1440}
                   />
                   <Image
                     className="z-2 border-border/25 aspect-15/8 relative rounded-2xl border dark:hidden"
                     src="/light.png"
                     alt="app screen"
-                    width="2700"
-                    height="1440"
+                    width={2700}
+                    height={1440}
                   />
                 </div>
               </div>

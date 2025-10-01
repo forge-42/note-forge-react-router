@@ -2,14 +2,14 @@
 
 import { authClient } from "@/lib/auth-client";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router";
 
 export function Logout() {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     await authClient.signOut();
-    router.push("/");
+    navigate("/");
   };
 
   return (

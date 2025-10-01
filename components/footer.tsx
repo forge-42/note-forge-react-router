@@ -1,12 +1,12 @@
-import Image from "next/image";
-import Link from "next/link";
+import { Image } from "@unpic/react";
+import { href, Link } from "react-router";
 
 export default function Footer() {
   return (
     <footer className="py-16 md:py-32">
       <div className="mx-auto max-w-5xl px-6">
         <Link
-          href="/"
+          to={href("/")}
           aria-label="go home"
           className="mx-auto size-fit flex items-center gap-2"
         >

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Link } from "react-router";
 
 export default function CallToAction() {
   return (
@@ -16,7 +16,7 @@ export default function CallToAction() {
 
           <div className="mt-12 flex flex-wrap justify-center gap-4">
             <Button asChild size="lg">
-              <Link href="/dashboard">
+              <Link to="/dashboard">
                 <span>Get Started</span>
               </Link>
             </Button>

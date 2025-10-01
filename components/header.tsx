@@ -1,11 +1,11 @@
 "use client";
-import Link from "next/link";
+import { href, Link } from "react-router";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { cn } from "@/lib/utils";
 import { useScroll } from "motion/react";
-import Image from "next/image";
+import { Image } from "@unpic/react";
 import { ModeSwitcher } from "./mode-switcher";
 
 const menuItems: { name: string; href: string }[] = [];
@@ -36,7 +36,7 @@ export const HeroHeader = () => {
           <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
             <div className="flex w-full items-center justify-between gap-12 lg:w-auto">
               <Link
-                href="/"
+                to={href("/")}
                 aria-label="home"
                 className="flex items-center space-x-2"
               >
@@ -64,7 +64,7 @@ export const HeroHeader = () => {
                   {menuItems.map((item, index) => (
                     <li key={index}>
                       <Link
-                        href={item.href}
+                        to={item.href}
                         className="text-muted-foreground hover:text-accent-foreground block duration-150"
                       >
                         <span>{item.name}</span>
@@ -81,7 +81,7 @@ export const HeroHeader = () => {
                   {menuItems.map((item, index) => (
                     <li key={index}>
                       <Link
-                        href={item.href}
+                        to={item.href}
                         className="text-muted-foreground hover:text-accent-foreground block duration-150"
                       >
                         <span>{item.name}</span>
@@ -93,7 +93,7 @@ export const HeroHeader = () => {
               <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
                 <div className="flex items-center">
                   <Link
-                    href="https://github.com/TheOrcDev/noteforge"
+                    to="https://github.com/TheOrcDev/noteforge"
                     target="_blank"
                   >
                     <Button
@@ -110,12 +110,12 @@ export const HeroHeader = () => {
                   <ModeSwitcher />
                 </div>
                 <Button asChild variant="outline" size="sm">
-                  <Link href="/login">
+                  <Link to="/login">
                     <span>Login</span>
                   </Link>
                 </Button>
                 <Button asChild size="sm">
-                  <Link href="/signup">
+                  <Link to="/signup">
                     <span>Sign Up</span>
                   </Link>
                 </Button>

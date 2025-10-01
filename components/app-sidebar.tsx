@@ -2,21 +2,18 @@ import * as React from "react";
 
 import { SearchForm } from "@/components/search-form";
 
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-  SidebarRail,
-} from "@/components/ui/sidebar";
-import { getNotebooks } from "@/server/notebooks";
-import Image from "next/image";
+import { Sidebar, SidebarContent, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
+import type { getNotebooks } from "@/server/notebooks.server";
+import { Image } from "@unpic/react";
 import { SidebarData } from "./sidebar-data";
-import Link from "next/link";
+import { Link } from "react-router";
 
-export async function AppSidebar({
-  ...props
-}: React.ComponentProps<typeof Sidebar>) {
-  const notebooks = await getNotebooks();
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  notebooks: Awaited<ReturnType<typeof getNotebooks>>;
+}
+
+export function AppSidebar({ ...props }: AppSidebarProps) {
+  const notebooks = props.notebooks;
 
   const data = {
     versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
@@ -35,7 +32,7 @@ export async function AppSidebar({
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <Link href="/dashboard" className="flex items-center gap-2 pl-2">
+        <Link to="/dashboard" className="flex items-center gap-2 pl-2">
           <Image src="/noteforge-logo.png" alt="Logo" width={32} height={32} />
           <h2>NoteForge</h2>
         </Link>
